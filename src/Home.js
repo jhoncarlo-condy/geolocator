@@ -47,11 +47,21 @@ function Home() {
 			}
 		} catch (error) {
 			setError('Geolocation Information not found');
-      setGeolocationData(null);
+			setGeolocationData(null);
 		} finally {
 			setLoading(false);
 		}
 	};
+
+	fetch('https://api.ipify.org?format=json')
+		.then((response) => response.json())
+		.then((data) => {
+			setIpAddress(data.ip);
+      // handleSearch();
+		})
+		.catch((error) => {
+      setIpAddress("");
+    });
 
 	return (
 		<div className='min-h-screen flex flex-col bg-gray-100'>
@@ -98,7 +108,10 @@ function Home() {
 								</h2>
 								<ul className='space-y-2'>
 									{Object.entries(geolocationData).map(([key, value]) => (
-										<li key={key} className='flex justify-between p-2 border-b border-gray-200'>
+										<li
+											key={key}
+											className='flex justify-between p-2 border-b border-gray-200'
+										>
 											<span className='font-semibold text-gray-700'>
 												{key.charAt(0).toUpperCase() +
 													key.slice(1).replace(/_/g, ' ')}
